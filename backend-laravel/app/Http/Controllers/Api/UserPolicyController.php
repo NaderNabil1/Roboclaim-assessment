@@ -63,15 +63,15 @@ class UserPolicyController extends Controller
             'status' => Policy::STATUS_PENDING,
         ]);
 
-        // try {
-        //     Mail::to($user->email)->send(new UserPolicySubmittedMail($policy, $user));
-        // } catch (\Throwable $e) {
-        //     Log::error('Error sending user policy submitted email', [
-        //         'exception' => $e,
-        //         'recipient' => $user->email,
-        //         'policy_id' => $policy->id,
-        //     ]);
-        // }
+        try {
+            Mail::to($user->email)->send(new UserPolicySubmittedMail($policy, $user));
+        } catch (\Throwable $e) {
+            Log::error('Error sending user policy submitted email', [
+                'exception' => $e,
+                'recipient' => $user->email,
+                'policy_id' => $policy->id,
+            ]);
+        }
 
         foreach (User::adminEmailAddresses() as $adminEmail) {
             try {
